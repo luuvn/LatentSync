@@ -1,18 +1,25 @@
 #!/bin/bash
 
-# Create a new conda environment
-conda create -y -n latentsync python=3.10.13
-conda activate latentsync
+# Tạo virtual environment bằng Python venv
+#python3 -m venv latentsync_env
+#source latentsync_env/bin/activate
 
-# Install ffmpeg
-conda install -y -c conda-forge ffmpeg
+# Cập nhật pip
+pip install --upgrade pip
 
-# Python dependencies
+# Cài ffmpeg qua apt
+apt-get update
+apt-get install -y libgl1 libglib2.0-0 ffmpeg
+
+# Cài dependencies Python
 pip install -r requirements.txt
 
-# OpenCV dependencies
-sudo apt -y install libgl1
+# Cài Hugging Face CLI
+pip install huggingface_hub
 
-# Download the checkpoints required for inference from HuggingFace
+# Tạo thư mục lưu checkpoint
+mkdir -p checkpoints
+
+# Tải checkpoint từ Hugging Face
 huggingface-cli download ByteDance/LatentSync-1.6 whisper/tiny.pt --local-dir checkpoints
 huggingface-cli download ByteDance/LatentSync-1.6 latentsync_unet.pt --local-dir checkpoints
